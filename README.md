@@ -8,7 +8,7 @@ Installation:
 
 Login to your Pi via SSH and execute the following command:
 ```
-sudo apt update && sudo apt install python-serial python-pathlib ppp git && cd /opt && git clone https://github.com/berkutta/cellular_hat_installer.git && cd cellular_hat_installer/ && sudo python start.py install && sudo reboot
+sudo apt update && sudo apt install python-serial python-pathlib ppp git && cd /opt && sudo git clone https://github.com/berkutta/cellular_hat_installer.git && cd cellular_hat_installer/ && sudo python start.py install && sudo reboot
 ```
 
 
