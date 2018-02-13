@@ -62,7 +62,7 @@ def install_system():
                 "nocrtscts\n"
                 "local\n" )
 
-    text_file = open("Output.txt", "w")
+    text_file = open("/etc/ppp/peers/rnet", "w")
 
     text_file.write(config)
 
