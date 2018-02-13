@@ -62,13 +62,11 @@ def install_system():
                 "nocrtscts\n"
                 "local\n" )
 
-    text_file = open("/etc/ppp/peers/rnet", "w")
+    rnet_file = open("/etc/ppp/peers/rnet", "w")
+    rnet_file.write(config)
+    rnet_file.close()
 
-    text_file.write(config)
-
-    text_file.close()
-
-    text_file = open("/var/spool/cron/crontabs/root", "a").write("\n" + "@reboot python /opt/cellular_hat_installer/start.py start" + "\n")
+    cron_file = open("/var/spool/cron/crontabs/root", "a").write("\n" + "@reboot python /opt/cellular_hat_installer/start.py start" + "\n")
 
 if sys.argv[1] == "start":
     start_module()
