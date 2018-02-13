@@ -6,7 +6,7 @@ This software is primarly made for my [Cellular Module](https://www.tindie.com/p
 
 Installation:
 
-Login to your Pi via SSH and execute the following command:
+Login to your Pi via SSH and execute the following command. But please, don't forget to attach an approperiate Antenna to the Cellular HAT:
 ```
 sudo apt update && sudo apt install python-serial python-pathlib ppp git && cd /opt && sudo git clone https://github.com/berkutta/cellular_hat_installer.git && cd cellular_hat_installer/ && sudo python start.py install && sudo reboot
 ```
