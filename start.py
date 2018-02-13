@@ -68,6 +68,8 @@ def install_system():
 
     text_file.close()
 
+    text_file = open("/var/spool/cron/crontabs/root", "a").write("\n" + "@reboot python /opt/cellular_hat_installer/start.py start" + "\n")
+
 if sys.argv[1] == "start":
     start_module()
 elif sys.argv[1] == "install":
