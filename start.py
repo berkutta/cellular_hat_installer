@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 from pathlib import Path
 
 def start_module():
-    #os.system("poff rnet")
+    os.system("poff rnet")
 
     ser = serial.Serial(
         port='/dev/ttyAMA0',
@@ -19,7 +19,7 @@ def start_module():
 
     ser.reset_input_buffer()
     ser.write("AT" + '\r\n')
-    time.sleep(2)
+    time.sleep(5)
 
     if ser.inWaiting() == 0:
         print "Module isn't started yet"
@@ -42,7 +42,9 @@ def start_module():
 
         ser.close()
 
-        #os.system("pon rnet")
+        time.sleep(2)
+
+        os.system("pon rnet")
 
 def install_system():
     serial_port_s0 = Path("/dev/ttyS0")
