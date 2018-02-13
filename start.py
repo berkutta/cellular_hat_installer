@@ -1,5 +1,6 @@
 import serial
 import time
+import sys
 import RPi.GPIO as GPIO
 
 from pathlib import Path
@@ -67,4 +68,9 @@ def install_system():
 
     text_file.close()
 
-install_system()
+if sys.argv[1] == "start":
+    start_module()
+elif sys.argv[1] == "install":
+    install_system()
+
+
