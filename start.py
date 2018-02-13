@@ -2,32 +2,69 @@ import serial
 import time
 import RPi.GPIO as GPIO
 
-ser = serial.Serial(
-	port='/dev/ttyAMA0',
-	baudrate=9600,
-	parity=serial.PARITY_ODD,
-	stopbits=serial.STOPBITS_TWO,
-	bytesize=serial.SEVENBITS
-)
+from pathlib import Path
 
-ser.reset_input_buffer()
-ser.write("AT" + '\r\n')
-time.sleep(2)
+def start_module():
+    ser = serial.Serial(
+        port='/dev/ttyAMA0',
+        baudrate=9600,
+        parity=serial.PARITY_ODD,
+        stopbits=serial.STOPBITS_TWO,
+        bytesize=serial.SEVENBITS
+    )
 
-if ser.inWaiting() == 0:
-    print "Module isn't started yet"
-
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(25, GPIO.OUT)
-    GPIO.output(25, 1)
-    time.sleep(2)
-    GPIO.output(25, 0)
+    ser.reset_input_buffer()
+    ser.write("AT" + '\r\n')
     time.sleep(2)
 
-ser.reset_input_buffer()
-ser.write("AT" + '\r\n')
-time.sleep(2)
+    if ser.inWaiting() == 0:
+        print "Module isn't started yet"
 
-if ser.inWaiting() >= 0:
-    print "Module started successfully"
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(25, GPIO.OUT)
+        GPIO.output(25, 1)
+        time.sleep(2)
+        GPIO.output(25, 0)
+        time.sleep(2)
+
+    ser.reset_input_buffer()
+    ser.write("AT" + '\r\n')
+    time.sleep(2)
+
+    if ser.inWaiting() >= 0:
+        print "Module started successfully"
     
+def install_system():
+    
+    serial_port_s0 = Path("/dev/ttyS0")
+    serial_port_ama0 = Path("/dev/ttyAMA0")
+    if serial_port_s0.exists():
+        print("Serial Port configured to /dev/ttyS0")
+        serial_port = "/dev/ttyS0"
+    elif serial_port_ama0.exists():
+        print("Serial Port configured to /dev/ttyAMA0")
+        serial_port = "/dev/ttyAMA0"
+    else:
+        print("Found no Serial port, please make sure to activate the Serial Port in raspi-config")
+
+    apn = raw_input('Enter your APN: ')
+
+    config =   ( "connect \"/usr/sbin/chat -v -f /etc/chatscripts/gprs -T " + str(apn) + "\"\n"
+                "" + serial_port + "\n"
+                "115200\n"
+                "noipdefault\n"
+                "usepeerdns\n"
+                "defaultroute\n"
+                "replacedefaultroute\n"
+                "persist\n"
+                "noauth\n"
+                "nocrtscts\n"
+                "local\n" )
+
+    text_file = open("Output.txt", "w")
+
+    text_file.write(config)
+
+    text_file.close()
+
+install_system()
