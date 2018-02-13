@@ -1,11 +1,14 @@
 import serial
 import time
 import sys
+import os
 import RPi.GPIO as GPIO
 
 from pathlib import Path
 
 def start_module():
+    os.system("poff rnet")
+
     ser = serial.Serial(
         port='/dev/ttyAMA0',
         baudrate=9600,
@@ -34,9 +37,10 @@ def start_module():
 
     if ser.inWaiting() >= 0:
         print "Module started successfully"
-    
+
+        os.system("pon rnet")
+
 def install_system():
-    
     serial_port_s0 = Path("/dev/ttyS0")
     serial_port_ama0 = Path("/dev/ttyAMA0")
     if serial_port_s0.exists():
