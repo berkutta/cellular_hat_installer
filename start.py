@@ -19,11 +19,10 @@ def start_module():
 
     ser.reset_input_buffer()
     ser.write("AT" + '\r\n')
-    time.sleep(5)
+    time.sleep(2)
 
-    if ser.inWaiting() == 0:
-        print "Module isn't started yet"
-
+    while (ser.inWaiting() == 0):
+        GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(25, GPIO.OUT)
         GPIO.output(25, 1)
@@ -31,20 +30,17 @@ def start_module():
         GPIO.output(25, 0)
         time.sleep(2)
 
-    ser.reset_input_buffer()
-    ser.write("AT" + '\r\n')
-    time.sleep(2)
+        print "Restart attemp"
 
-    if ser.inWaiting() >= 0:
-        print "Module started successfully"
-
-        ser.flush()
-
-        ser.close()
-
+        ser.reset_input_buffer()
+        ser.write("AT" + '\r\n')
         time.sleep(2)
 
-        os.system("pon rnet")
+    print "Module started successfully"
+
+    ser.close()
+
+    os.system("pon rnet")
 
 def install_system():
     serial_port_s0 = Path("/dev/ttyS0")
